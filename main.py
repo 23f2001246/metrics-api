@@ -28,11 +28,6 @@ app.add_middleware(MetricsMiddleware)
 def home():
     return {"message": "Hello World"}
 @app.get("/stats")
-
-@app.get("/stats")
-@app.get("/stats")
-
-@app.get("/stats")
 def stats(values: str):
 
     numbers = [int(x) for x in values.split(",")]

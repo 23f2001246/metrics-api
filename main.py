@@ -4,13 +4,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 import time
 import uuid
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://dash-triih0.example.com"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+
 class MetricsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         start = time.perf_counter()
@@ -23,7 +17,16 @@ class MetricsMiddleware(BaseHTTPMiddleware):
         response.headers["X-Process-Time"] = f"{process_time:.6f}"
 
         return response
+
 app.add_middleware(MetricsMiddleware)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://dash-triih0.example.com"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 @app.get("/")
 def home():
     return {"message": "Hello World"}
